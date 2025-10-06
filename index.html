@@ -284,7 +284,7 @@
             padding: 20px 30px;
             border-radius: 20px;
             color: #ffd700;
-            font-size: 14px;
+            font-size: 10px;
             text-align: center;
             z-index: 1000;
             backdrop-filter: blur(10px);
@@ -310,7 +310,7 @@
 
         .wish-text {
             font-family: 'Arial', sans-serif;
-            font-size: 12px;
+            font-size: 10px;
             line-height: 1.4;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
@@ -390,6 +390,35 @@
 
         .countdown-timer.zoom {
             animation: zoomPulse 0.5s ease-in-out;
+        }
+
+        /* Developer watermark */
+        .dev-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            font-weight: bold;
+            color: rgba(221, 219, 228, 0.847);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+            pointer-events: none;
+            z-index: 1;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 3px;
+            user-select: none;
+            animation: subtleGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes subtleGlow {
+            0%, 100% {
+                opacity: 0.1;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+            }
+            50% {
+                opacity: 0.15;
+                text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            }
         }
 
         /* Hiệu ứng lá bay */
@@ -581,6 +610,9 @@
 
     <!-- Ngôi sao -->
     <div class="stars" id="stars"></div>
+
+    <!-- Developer watermark -->
+    <div class="dev-watermark">MAI THANH THUẬN DEV</div>
 
     <!-- Container chính -->
     <div class="container" id="container">

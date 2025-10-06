@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thả Lồng Đèn Trung Thu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #0a1128 0%, #1e3a5f 50%, rgba(84, 51, 13, 0.445) 100%);
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Hiệu ứng trăng */
+        .moon {
+            position: absolute;
+            top: 10%;
+            right: 15%;
+            width: 120px;
+            height: 120px;
+            background-image: url('images/moon.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: drop-shadow(0 0 30px rgba(254, 245, 220, 0.8)) 
+                    drop-shadow(0 0 60px rgba(244, 208, 63, 0.6))
+                    drop-shadow(0 0 90px rgba(255, 255, 255, 0.4));
+            animation: moonGlow 3s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        /* Fallback background khi không load được ảnh */
+        .moon.fallback {
+            background-image: none;
+            background: radial-gradient(circle, #fef5dc 0%, #f4d03f 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 60px rgba(254, 245, 220, 0.8),
+                        0 0 100px rgba(244, 208, 63, 0.5);
+            filter: none;
+        }
+
+        @keyframes moonGlow {
+            0%, 100% {
+                filter: drop-shadow(0 0 30px rgba(254, 245, 220, 0.8)) 
+                        drop-shadow(0 0 60px rgba(244, 208, 63, 0.6))
+                        drop-shadow(0 0 90px rgba(255, 255, 255, 0.4));
+            }
+            50% {
+                filter: drop-shadow(0 0 40px rgba(254, 245, 220, 1)) 
+                        drop-shadow(0 0 80px rgba(244, 208, 63, 0.8))
+                        drop-shadow(0 0 120px rgba(255, 255, 255, 0.6));
+            }
+        }
+
+        .moon.fallback {
+            animation: moonGlowFallback 3s ease-in-out infinite;
+        }
+
+        @keyframes moonGlowFallback {
+            0%, 100% {
+                box-shadow: 0 0 60px rgba(254, 245, 220, 0.8),
+                           0 0 100px rgba(244, 208, 63, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 80px rgba(254, 245, 220, 1),
+                           0 0 120px rgba(244, 208, 63, 0.7);
+            }
+        }
+
+        /* Ngôi sao */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Container chính */
+        .container {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Tiêu đề */
+        .title {
+            text-align: center;
+            padding: 30px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            display: none;
+        }
+
+        .title h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .title p {
+            font-size: 1.2em;
+            color: #fff;
+        }
+
+        /* Lồng đèn */
+        .lantern {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.3s;
+            filter: drop-shadow(0 0 10px rgba(255, 200, 0, 0.6));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Kích thước xa gần */
+        .lantern.size-small {
+            width: 40px;
+            height: 50px;
+            opacity: 0.7;
+            z-index: 1;
+        }
+
+        .lantern.size-medium {
+            width: 60px;
+            height: 75px;
+            opacity: 0.85;
+            z-index: 2;
+        }
+
+        .lantern.size-large {
+            width: 80px;
+            height: 100px;
+            opacity: 1;
+            z-index: 3;
+        }
+
+        .lantern.size-xlarge {
+            width: 100px;
+            height: 125px;
+            opacity: 1;
+            z-index: 4;
+        }
+
+        .lantern:hover {
+            transform: scale(1.1);
+        }
+
+        .lantern img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Lồng đèn bay lên */
+        @keyframes flyUp {
+            0% {
+                transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            25% {
+                transform: translateY(-32.5vh) translateX(16px) scale(0.97) rotate(2deg);
+            }
+            50% {
+                transform: translateY(-65vh) translateX(32px) scale(0.94) rotate(3deg);
+            }
+            75% {
+                transform: translateY(-97.5vh) translateX(48px) scale(0.91) rotate(4deg);
+            }
+            100% {
+                transform: translateY(-130vh) translateX(65px) scale(0.88) rotate(5deg);
+                opacity: 0;
+            }
+        }
+
+        .flying {
+            animation: flyUp 10s linear forwards;
+        }
+
+        /* Hiệu ứng gió nhẹ cho lồng đèn chưa bay */
+        @keyframes gentleWind {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-2px) translateX(3px) rotate(0.5deg);
+            }
+            50% {
+                transform: translateY(-1px) translateX(-2px) rotate(-0.3deg);
+            }
+            75% {
+                transform: translateY(-3px) translateX(4px) rotate(0.7deg);
+            }
+        }
+
+        .lantern:not(.flying) {
+            animation: float 3s ease-in-out infinite, gentleWind 5s ease-in-out infinite;
+        }
+
+        /* Nút thả lồng đèn */
+        .release-button {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 25px rgba(245, 87, 108, 0.4);
+            transition: all 0.3s;
+            z-index: 100;
+            font-weight: bold;
+            display: none;
+        }
+
+        .release-button:hover {
+            transform: translateX(-50%) translateY(-5px);
+            box-shadow: 0 10px 35px rgba(245, 87, 108, 0.6);
+        }
+
+        .release-button:active {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Đếm số lồng đèn */
+        .counter {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 18px;
+            border-radius: 15px;
+            color: white;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            opacity: 0.7;
+        }
+
+        .counter span {
+            color: rgba(255, 215, 0, 0.9);
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        /* Điều ước */
+        .wish {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px 30px;
+            border-radius: 20px;
+            color: #ffd700;
+            font-size: 14px;
+            text-align: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            max-width: 300px;
+            pointer-events: none;
+            transform: translate(-50%, -100%);
+        }
+
+        .wish::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #ffd700;
+        }
+
+        .wish-text {
+            font-family: 'Arial', sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Hướng dẫn phím tắt */
+        .instructions {
+             display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 30px;
+            border-radius: 15px;
+            color: white;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            text-align: center;
+        }
+
+        .instructions span {
+            color: #ffd700;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+
+        /* Timer đếm ngược */
+        .countdown-timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px 18px;
+            border-radius: 15px;
+            color: white;
+            font-size: 0.9em;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: none;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            opacity: 0.7;
+        }
+
+        .countdown-timer.active {
+            display: block;
+        }
+
+        .countdown-timer .timer-text {
+            font-size: 0.75em;
+            margin-bottom: 3px;
+            color: rgba(204, 204, 204, 0.8);
+        }
+
+        .countdown-timer .timer-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: rgba(255, 215, 0, 0.9);
+        }
+
+        .countdown-timer.warning {
+            animation: pulse 1s infinite;
+            border-color: rgba(255, 107, 107, 0.6);
+            opacity: 0.8;
+        }
+
+        .countdown-timer.warning .timer-value {
+            color: rgba(255, 107, 107, 0.9);
+        }
+
+        @keyframes zoomPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .countdown-timer.zoom {
+            animation: zoomPulse 0.5s ease-in-out;
+        }
+
+        /* Hiệu ứng lá bay */
+        .leaf {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .leaf::before {
+            content: '🍂';
+            font-size: var(--leaf-size, 14px);
+            position: absolute;
+            animation: leafFall var(--fall-duration, 8s) linear infinite;
+            opacity: var(--leaf-opacity, 0.7);
+        }
+
+        .leaf.maple::before {
+            content: '🍁';
+        }
+
+        .leaf.oak::before {
+            content: '🌿';
+        }
+
+        @keyframes leafFall {
+            0% {
+                transform: translateX(-100px) translateY(var(--start-y, 0px)) rotate(0deg);
+                opacity: var(--leaf-opacity, 0.7);
+            }
+            25% {
+                transform: translateX(25vw) translateY(calc(var(--start-y, 0px) + 20px)) rotate(90deg);
+            }
+            50% {
+                transform: translateX(50vw) translateY(calc(var(--start-y, 0px) - 10px)) rotate(180deg);
+            }
+            75% {
+                transform: translateX(75vw) translateY(calc(var(--start-y, 0px) + 15px)) rotate(270deg);
+            }
+            100% {
+                transform: translateX(120vw) translateY(var(--start-y, 0px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes leafSway {
+            0%, 100% {
+                transform: translateX(0px) rotate(0deg);
+            }
+            25% {
+                transform: translateX(10px) rotate(15deg);
+            }
+            50% {
+                transform: translateX(-5px) rotate(-10deg);
+            }
+            75% {
+                transform: translateX(15px) rotate(20deg);
+            }
+        }
+
+        /* Hiệu ứng lấp lánh đuôi đèn */
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .sparkle::before {
+            content: '⭐';
+            font-size: var(--sparkle-size, 6px);
+            position: absolute;
+            animation: sparkleFloat 2s ease-out forwards;
+            color: #ffd700;
+            opacity: 0.6;
+        }
+
+        @keyframes sparkleFloat {
+            0% {
+                opacity: 0.6;
+                transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: translateY(-20px) translateX(var(--random-x, 0px)) rotate(180deg) scale(0.8);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-40px) translateX(var(--random-x-end, 0px)) rotate(360deg) scale(0.2);
+            }
+        }
+
+        /* Hiệu ứng kim tuyến nhỏ */
+        .glitter {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: #ffd700;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 5;
+            animation: glitterFall 1.5s ease-out forwards;
+            opacity: 0.5;
+        }
+
+        @keyframes glitterFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) translateX(0) scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(-15px) translateX(var(--drift-x, 0px)) scale(0.7);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-30px) translateX(var(--drift-x-end, 0px)) scale(0.2);
+            }
+        }
+
+        /* Sao băng */
+        .shooting-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: linear-gradient(45deg, #fff, #ffd700, #fff);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px #ffd700, 0 0 30px #fff;
+            z-index: 6;
+        }
+
+        .shooting-star::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 30%, rgba(255, 215, 0, 1) 70%, rgba(255, 255, 255, 0) 100%);
+            transform: translate(-50%, -50%) rotate(var(--angle, -45deg));
+            animation: shootingStarTail 2s ease-out forwards;
+        }
+
+        @keyframes shootingStarMove {
+            0% {
+                opacity: 0;
+                transform: translateX(var(--start-x, -100px)) translateY(var(--start-y, 0px)) scale(0);
+            }
+            10% {
+                opacity: 1;
+                transform: translateX(var(--start-x, -100px)) translateY(var(--start-y, 0px)) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateX(var(--end-x, 100vw)) translateY(var(--end-y, 100px)) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(var(--end-x, 100vw)) translateY(var(--end-y, 100px)) scale(0);
+            }
+        }
+
+        @keyframes shootingStarTail {
+            0% {
+                opacity: 0;
+                width: 0px;
+            }
+            30% {
+                opacity: 1;
+                width: 80px;
+            }
+            70% {
+                opacity: 1;
+                width: 100px;
+            }
+            100% {
+                opacity: 0;
+                width: 120px;
+            }
+        }
+
+        .shooting-star.active {
+            animation: shootingStarMove 2s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Trăng -->
+    <div class="moon"></div>
+
+    <!-- Ngôi sao -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Container chính -->
+    <div class="container" id="container">
+        <div class="title animate__animated animate__fadeInDown">
+            <h1>🏮 Thả Lồng Đèn Trung Thu 🏮</h1>
+            <p>Nhấp vào lồng đèn để thả lên trời ⭐</p>
+        </div>
+
+        <!-- Đếm số lồng đèn -->
+        <div class="counter">
+            Đã thả: <span id="count">0</span> lồng đèn
+        </div>
+
+        <!-- Nút thả lồng đèn -->
+        <button class="release-button animate__animated animate__bounceIn" onclick="createLantern()">
+            ✨ Thả Lồng Đèn ✨
+        </button>
+
+        <!-- Hướng dẫn phím tắt -->
+        <div class="instructions">
+            <span>Click</span> Thả lồng đèn & xem điều ước |
+            <span>SPACE</span> Tạo lồng đèn |
+            <span>ENTER</span> Thả tất cả |
+            <span>A</span> Tạo ngẫu nhiên
+        </div>
+
+        <!-- Timer đếm ngược -->
+        <div class="countdown-timer" id="countdownTimer">
+            <div class="timer-text">Tự động thả lồng đèn sau:</div>
+            <div class="timer-value" id="timerValue">10s</div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        let lanternCount = 0;
+        let lastUserActivity = Date.now();
+        let inactivityTimer = null;
+        let autoReleaseTimer = null;
+        let countdownInterval = null;
+        let continuousReleaseInterval = null;
+
+        // Danh sách điều ước
+        const wishes = [
+            "Chúc bạn luôn khỏe mạnh, hạnh phúc và thành công! 🌟",
+            "Mong ước của bạn sẽ sớm thành hiện thực! ✨",
+            "Chúc gia đình bạn luôn sum vầy, ấm áp! 🏮",
+            "Hy vọng bạn sẽ gặp nhiều may mắn trong cuộc sống! 🍀",
+            "Chúc bạn học tập và công việc tiến triển vượt bậc! 📚",
+            "Mong bạn luôn vui vẻ, tràn đầy năng lượng! 😊",
+            "Chúc mọi điều tốt đẹp đến với bạn! 🌸",
+            "Hy vọng tình yêu luôn mỉm cười với bạn! 💕",
+            "Chúc bạn đạt được mọi mục tiêu đã đề ra! 🎯",
+            "Mong bạn luôn bình an, tài lộc đầy nhà! 🧧",
+            "Chúc bạn sẽ tìm thấy niềm vui trong mọi điều! 🎊",
+            "Hy vọng mọi khó khăn sẽ sớm qua đi! 🌈",
+            "Chúc bạn ngủ ngon, ăn ngon, sống khỏe! 🥮",
+            "Mong bạn luôn gặp được những người tốt bụng! 👥",
+            "Chúc bạn có một tương lai tươi sáng! 🌅",
+            "Hy vọng ước mơ của bạn sẽ thành sự thật! 🌙",
+            "Chúc bạn luôn được yêu thương và trân trọng! 💖",
+            "Mong bạn tìm được đam mê thật sự của mình! 🔥",
+            "Chúc bạn may mắn trong mọi quyết định! 🎲",
+            "Hy vọng bạn luôn hạnh phúc với những gì mình có! 🌺"
+        ];
+
+        // Cập nhật timer hiển thị
+        function updateCountdownDisplay() {
+            const timerElement = document.getElementById('countdownTimer');
+            const timerValueElement = document.getElementById('timerValue');
+            
+            if (!timerElement || !timerValueElement) return;
+            
+            const now = Date.now();
+            const timeSinceLastActivity = now - lastUserActivity;
+            
+            if (timeSinceLastActivity >= 10000) {
+                // Đã qua 10 giây, đang trong giai đoạn thả liên tục mỗi 3 giây
+                const timeSinceAutoMode = timeSinceLastActivity - 10000;
+                const timeUntilNextRelease = 3000 - (timeSinceAutoMode % 3000);
+                const seconds = Math.ceil(timeUntilNextRelease / 1000);
+                
+                timerValueElement.textContent = seconds + 's';
+                timerElement.className = 'countdown-timer active warning';
+                timerElement.querySelector('.timer-text').textContent = 'Lồng đèn tiếp theo:';
+                
+                // Thêm hiệu ứng zoom khi đếm ngược đến 1
+                if (seconds === 1) {
+                    timerElement.classList.add('zoom');
+                    setTimeout(() => {
+                        timerElement.classList.remove('zoom');
+                    }, 500);
+                }
+            } else {
+                // Chưa đến 10 giây
+                const timeUntilInactive = 10000 - timeSinceLastActivity;
+                const seconds = Math.ceil(timeUntilInactive / 1000);
+                timerValueElement.textContent = seconds + 's';
+                timerElement.className = 'countdown-timer active';
+                timerElement.querySelector('.timer-text').textContent = 'Tự động thả lồng đèn sau:';
+            }
+        }
+
+        // Cập nhật thời gian hoạt động cuối của người dùng
+        function updateUserActivity() {
+            lastUserActivity = Date.now();
+            
+            // Hủy tất cả timer tự động
+            if (autoReleaseTimer) {
+                clearTimeout(autoReleaseTimer);
+                autoReleaseTimer = null;
+            }
+            
+            if (continuousReleaseInterval) {
+                clearInterval(continuousReleaseInterval);
+                continuousReleaseInterval = null;
+            }
+            
+            // Reset timer kiểm tra không hoạt động
+            if (inactivityTimer) {
+                clearTimeout(inactivityTimer);
+            }
+            
+            // Ẩn timer đếm ngược khi có hoạt động
+            const timerElement = document.getElementById('countdownTimer');
+            if (timerElement) {
+                timerElement.classList.remove('active');
+            }
+            
+            // Thiết lập timer mới cho 10 giây
+            inactivityTimer = setTimeout(() => {
+                // Hiển thị timer đếm ngược
+                if (timerElement) {
+                    timerElement.classList.add('active');
+                }
+                
+                // Bắt đầu thả lồng đèn liên tục: lần đầu ngay lập tức, sau đó mỗi 3 giây
+                startContinuousRelease();
+            }, 10000);
+        }
+
+        // Bắt đầu thả lồng đèn liên tục
+        function startContinuousRelease() {
+            // Thả lồng đèn đầu tiên ngay lập tức (sau 30 giây không hoạt động)
+            autoReleaseLantern();
+            
+            // Thiết lập interval để thả lồng đèn mỗi 3 giây tiếp theo
+            continuousReleaseInterval = setInterval(() => {
+                autoReleaseLantern();
+            }, 3000);
+        }
+
+        // Bắt đầu cập nhật timer hiển thị
+        function startCountdownDisplay() {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            countdownInterval = setInterval(updateCountdownDisplay, 100);
+        }
+
+        // Tự động thả 1 lồng đèn ngẫu nhiên
+        function autoReleaseLantern() {
+            const availableLanterns = document.querySelectorAll('.lantern:not(.flying)');
+            
+            if (availableLanterns.length > 0) {
+                // Chọn ngẫu nhiên 1 lồng đèn
+                const randomIndex = Math.floor(Math.random() * availableLanterns.length);
+                const selectedLantern = availableLanterns[randomIndex];
+                
+                // Thả lồng đèn với hiệu ứng đặc biệt
+                releaseLantern(selectedLantern, true);
+                
+                // Tạo hiệu ứng nhấp nháy để người dùng chú ý
+                gsap.to(selectedLantern, {
+                    duration: 0.2,
+                    scale: 1.2,
+                    repeat: 3,
+                    yoyo: true,
+                    ease: "power2.inOut"
+                });
+            }
+        }
+
+        // Hiển thị điều ước
+        function showWish(lantern) {
+            // Kiểm tra xem lồng đèn này đã có điều ước chưa
+            if (lantern.hasWish) return;
+            
+            lantern.hasWish = true;
+            
+            const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+            
+            const wishElement = document.createElement('div');
+            wishElement.className = 'wish';
+            wishElement.innerHTML = `<div class="wish-text">✨ ${randomWish} ✨</div>`;
+            
+            // Lấy vị trí của lồng đèn
+            const rect = lantern.getBoundingClientRect();
+            const lanternX = rect.left + rect.width / 2;
+            const lanternY = rect.top;
+            
+            wishElement.style.left = lanternX + 'px';
+            wishElement.style.top = (lanternY - 20) + 'px';
+            
+            document.body.appendChild(wishElement);
+            
+            // Animation xuất hiện
+            gsap.from(wishElement, {
+                duration: 0.5,
+                scale: 0,
+                opacity: 0,
+                ease: "back.out(1.7)"
+            });
+            
+            // Di chuyển cùng với lồng đèn khi bay lên
+            const followLantern = () => {
+                if (!document.contains(lantern) || !document.contains(wishElement)) {
+                    return;
+                }
+                
+                const currentRect = lantern.getBoundingClientRect();
+                const currentX = currentRect.left + currentRect.width / 2;
+                const currentY = currentRect.top;
+                
+                wishElement.style.left = currentX + 'px';
+                wishElement.style.top = (currentY - 20) + 'px';
+                
+                requestAnimationFrame(followLantern);
+            };
+            
+            followLantern();
+            
+            // Tự động biến mất sau 3 giây
+            setTimeout(() => {
+                gsap.to(wishElement, {
+                    duration: 0.5,
+                    scale: 0,
+                    opacity: 0,
+                    ease: "back.in(1.7)",
+                    onComplete: () => {
+                        if (wishElement.parentNode) {
+                            wishElement.remove();
+                        }
+                    }
+                });
+            }, 3000);
+        }
+
+        // Tạo ngôi sao
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 60 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Tạo lồng đèn
+        function createLantern() {
+            const container = document.getElementById('container');
+            const lantern = document.createElement('div');
+            lantern.className = 'lantern';
+            
+            // Kích thước ngẫu nhiên tạo hiệu ứng xa gần
+            const sizes = ['size-small', 'size-medium', 'size-large', 'size-xlarge'];
+            const randomSize = sizes[Math.floor(Math.random() * sizes.length)];
+            lantern.classList.add(randomSize);
+            
+            // Vị trí ngẫu nhiên ở dưới màn hình
+            const randomX = Math.random() * (window.innerWidth - 150);
+            lantern.style.left = randomX + 'px';
+            lantern.style.bottom = '50px';
+            
+            // Tạo hình ảnh lồng đèn
+            const img = document.createElement('img');
+            img.src = 'images/lantern.png';
+            img.alt = 'Lồng đèn';
+            
+            // Xử lý lỗi nếu không load được ảnh
+            img.onerror = function() {
+                // Tạo lồng đèn bằng CSS nếu không có ảnh
+                lantern.innerHTML = `
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%); border-radius: 50% 50% 40% 40%; position: relative; box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);">
+                        <div style="position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 2px; height: 20px; background: #8b4513;"></div>
+                        <div style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); width: 30px; height: 15px; background: #ffd700; border-radius: 50%;"></div>
+                    </div>
+                `;
+            };
+            
+            lantern.appendChild(img);
+            
+            // Thêm sự kiện click
+            lantern.addEventListener('click', function() {
+                releaseLantern(lantern);
+            });
+            
+            // Animation xuất hiện
+            gsap.from(lantern, {
+                duration: 0.5,
+                scale: 0,
+                ease: "back.out(1.7)"
+            });
+            
+            container.appendChild(lantern);
+        }
+
+        // Thả lồng đèn bay lên
+        function releaseLantern(lantern, showWishMessage = true) {
+            // Hiển thị điều ước trước khi thả (chỉ khi click)
+            if (showWishMessage) {
+                showWish(lantern);
+            }
+            
+            lantern.classList.add('flying');
+            lanternCount++;
+            document.getElementById('count').textContent = lanternCount;
+            
+            // Tạo hiệu ứng ánh sáng khi thả
+            gsap.to(lantern, {
+                duration: 0.3,
+                filter: 'drop-shadow(0 0 30px rgba(255, 200, 0, 1)) brightness(1.5)',
+                yoyo: true,
+                repeat: 1
+            });
+            
+            // Bắt đầu hiệu ứng lấp lánh đuôi đèn
+            createSparkleTrail(lantern);
+            
+            // Xóa lồng đèn sau khi bay hết
+            setTimeout(() => {
+                lantern.remove();
+            }, 10500);
+        }
+
+        // Tạo hiệu ứng lấp lánh theo đuôi đèn
+        function createSparkleTrail(lantern) {
+            const sparkleInterval = setInterval(() => {
+                // Kiểm tra xem lồng đèn còn tồn tại không
+                if (!document.contains(lantern)) {
+                    clearInterval(sparkleInterval);
+                    return;
+                }
+                
+                const rect = lantern.getBoundingClientRect();
+                const lanternX = rect.left + rect.width / 2;
+                const lanternY = rect.top + rect.height;
+                
+                // Tạo nhiều ngôi sao nhỏ với kích thước giảm dần
+                for (let i = 0; i < 4; i++) {
+                    setTimeout(() => {
+                        createSparkleParticle(lanternX, lanternY, i);
+                        if (i < 2) { // Chỉ tạo 2 hạt kim tuyến nhỏ
+                            createGlitterParticle(lanternX, lanternY);
+                        }
+                    }, i * 30);
+                }
+            }, 120);
+            
+            // Dừng tạo hiệu ứng sau 10.5 giây
+            setTimeout(() => {
+                clearInterval(sparkleInterval);
+            }, 10500);
+        }
+
+        // Tạo hạt lấp lánh
+        function createSparkleParticle(x, y, index = 0) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            
+            // Kích thước giảm dần theo index (càng xa đuôi càng nhỏ)
+            const baseSize = 6 - (index * 1); // 6px, 5px, 4px, 3px
+            sparkle.style.setProperty('--sparkle-size', baseSize + 'px');
+            
+            // Vị trí ngẫu nhiên xung quanh đuôi đèn, càng xa càng phân tán
+            const spread = 15 + (index * 5); // Độ phân tán tăng dần
+            const randomOffsetX = (Math.random() - 0.5) * spread;
+            const randomOffsetY = Math.random() * 8 + (index * 3);
+            
+            sparkle.style.left = (x + randomOffsetX) + 'px';
+            sparkle.style.top = (y + randomOffsetY) + 'px';
+            
+            // Chuyển động ngẫu nhiên, càng xa càng chậm
+            const randomX = (Math.random() - 0.5) * (20 - index * 3);
+            const randomXEnd = (Math.random() - 0.5) * (30 - index * 5);
+            sparkle.style.setProperty('--random-x', randomX + 'px');
+            sparkle.style.setProperty('--random-x-end', randomXEnd + 'px');
+            
+            document.body.appendChild(sparkle);
+            
+            // Xóa sau khi animation kết thúc
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+
+        // Tạo hạt kim tuyến nhỏ
+        function createGlitterParticle(x, y) {
+            const glitter = document.createElement('div');
+            glitter.className = 'glitter';
+            
+            // Vị trí ngẫu nhiên gần đuôi đèn
+            const randomOffsetX = (Math.random() - 0.5) * 20;
+            const randomOffsetY = Math.random() * 10;
+            
+            glitter.style.left = (x + randomOffsetX) + 'px';
+            glitter.style.top = (y + randomOffsetY) + 'px';
+            
+            // Chuyển động nhẹ
+            const driftX = (Math.random() - 0.5) * 15;
+            const driftXEnd = (Math.random() - 0.5) * 25;
+            glitter.style.setProperty('--drift-x', driftX + 'px');
+            glitter.style.setProperty('--drift-x-end', driftXEnd + 'px');
+            
+            document.body.appendChild(glitter);
+            
+            // Xóa sau khi animation kết thúc
+            setTimeout(() => {
+                glitter.remove();
+            }, 1500);
+        }
+
+        // Tạo sao băng
+        function createShootingStar() {
+            const shootingStar = document.createElement('div');
+            shootingStar.className = 'shooting-star';
+            
+            // Vị trí xuất phát ngẫu nhiên (từ trên xuống, từ trái qua phải)
+            const startSide = Math.random() > 0.5 ? 'top' : 'left';
+            let startX, startY, endX, endY, angle;
+            
+            if (startSide === 'top') {
+                // Từ trên xuống chéo
+                startX = Math.random() * window.innerWidth;
+                startY = -50;
+                endX = startX + (Math.random() - 0.5) * 400;
+                endY = window.innerHeight * 0.6;
+                angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+            } else {
+                // Từ trái qua phải chéo xuống
+                startX = -50;
+                startY = Math.random() * window.innerHeight * 0.4;
+                endX = window.innerWidth + 50;
+                endY = startY + Math.random() * 200;
+                angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+            }
+            
+            shootingStar.style.left = startX + 'px';
+            shootingStar.style.top = startY + 'px';
+            shootingStar.style.setProperty('--start-x', '0px');
+            shootingStar.style.setProperty('--start-y', '0px');
+            shootingStar.style.setProperty('--end-x', (endX - startX) + 'px');
+            shootingStar.style.setProperty('--end-y', (endY - startY) + 'px');
+            shootingStar.style.setProperty('--angle', angle + 'deg');
+            
+            // Kích thước ngẫu nhiên
+            const size = Math.random() * 2 + 1; // 1-3px
+            shootingStar.style.width = size + 'px';
+            shootingStar.style.height = size + 'px';
+            
+            document.body.appendChild(shootingStar);
+            
+            // Bắt đầu animation
+            setTimeout(() => {
+                shootingStar.classList.add('active');
+            }, 100);
+            
+            // Xóa sau khi animation kết thúc
+            setTimeout(() => {
+                shootingStar.remove();
+            }, 2500);
+        }
+
+        // Tạo lá bay
+        function createFallingLeaf() {
+            const leaf = document.createElement('div');
+            leaf.className = 'leaf';
+            
+            // Chọn ngẫu nhiên loại lá
+            const leafTypes = ['', 'maple', 'oak'];
+            const randomType = leafTypes[Math.floor(Math.random() * leafTypes.length)];
+            if (randomType) leaf.classList.add(randomType);
+            
+            // Vị trí xuất phát từ bên trái, ở các độ cao khác nhau
+            const startY = Math.random() * (window.innerHeight * 0.6) + window.innerHeight * 0.2; // 20%-80% chiều cao màn hình
+            leaf.style.left = '-100px';
+            leaf.style.top = startY + 'px';
+            
+            // Kích thước và độ mờ ngẫu nhiên
+            const size = Math.random() * 8 + 10; // 10-18px
+            const opacity = Math.random() * 0.4 + 0.4; // 0.4-0.8
+            const duration = Math.random() * 3 + 5; // 5-8 giây
+            
+            leaf.style.setProperty('--leaf-size', size + 'px');
+            leaf.style.setProperty('--leaf-opacity', opacity);
+            leaf.style.setProperty('--fall-duration', duration + 's');
+            leaf.style.setProperty('--start-y', '0px'); // Vị trí Y tương đối so với vị trí ban đầu
+            
+            // Thêm animation delay ngẫu nhiên nhỏ
+            leaf.style.animationDelay = Math.random() * 1 + 's';
+            
+            document.body.appendChild(leaf);
+            
+            // Xóa sau khi animation kết thúc
+            setTimeout(() => {
+                leaf.remove();
+            }, (duration + 1) * 1000);
+        }
+
+        // Tạo nhóm lá bay
+        function createLeafGroup() {
+            const groupSize = Math.random() * 4 + 3; // 3-6 lá trong một nhóm
+            const baseY = Math.random() * (window.innerHeight * 0.5) + window.innerHeight * 0.25; // Vùng trung tâm màn hình
+            
+            for (let i = 0; i < groupSize; i++) {
+                setTimeout(() => {
+                    const leaf = document.createElement('div');
+                    leaf.className = 'leaf';
+                    
+                    // Chọn ngẫu nhiên loại lá
+                    const leafTypes = ['', 'maple', 'oak'];
+                    const randomType = leafTypes[Math.floor(Math.random() * leafTypes.length)];
+                    if (randomType) leaf.classList.add(randomType);
+                    
+                    // Vị trí trong nhóm - gần nhau nhưng có chút khác biệt
+                    const offsetY = (Math.random() - 0.5) * 80; // Phân tán theo chiều dọc ±40px
+                    const startY = baseY + offsetY;
+                    
+                    leaf.style.left = '-100px';
+                    leaf.style.top = startY + 'px';
+                    
+                    // Kích thước và độ mờ ngẫu nhiên
+                    const size = Math.random() * 8 + 10; // 10-18px
+                    const opacity = Math.random() * 0.4 + 0.4; // 0.4-0.8
+                    const duration = Math.random() * 2 + 6; // 6-8 giây
+                    
+                    leaf.style.setProperty('--leaf-size', size + 'px');
+                    leaf.style.setProperty('--leaf-opacity', opacity);
+                    leaf.style.setProperty('--fall-duration', duration + 's');
+                    leaf.style.setProperty('--start-y', '0px');
+                    
+                    document.body.appendChild(leaf);
+                    
+                    // Xóa sau khi animation kết thúc
+                    setTimeout(() => {
+                        leaf.remove();
+                    }, (duration + 1) * 1000);
+                }, i * 200); // Delay giữa các lá trong cùng nhóm
+            }
+        }
+
+        // Tự động tạo lá bay theo nhóm
+        function autoCreateFallingLeaves() {
+            const createLeaf = () => {
+                // 70% tạo nhóm lá, 30% tạo lá đơn lẻ
+                if (Math.random() < 0.7) {
+                    createLeafGroup();
+                } else {
+                    createFallingLeaf();
+                }
+                
+                // Tạo nhóm/lá tiếp theo sau 4-8 giây
+                const nextDelay = Math.random() * 4000 + 4000;
+                setTimeout(createLeaf, nextDelay);
+            };
+            
+            // Bắt đầu tạo lá đầu tiên sau 2 giây
+            setTimeout(createLeaf, 2000);
+        }
+
+        // Tự động tạo sao băng ngẫu nhiên
+        function autoCreateShootingStars() {
+            const createStar = () => {
+                createShootingStar();
+                // Tạo sao băng tiếp theo sau 8-15 giây
+                const nextDelay = Math.random() * 7000 + 8000;
+                setTimeout(createStar, nextDelay);
+            };
+            
+            // Bắt đầu tạo sao băng đầu tiên sau 3 giây
+            setTimeout(createStar, 3000);
+        }
+
+        // Tự động tạo lồng đèn
+        function autoCreateLanterns() {
+            setInterval(() => {
+                if (document.querySelectorAll('.lantern').length < 10) {
+                    createLantern();
+                }
+            }, 3000);
+        }
+
+        // Thả tất cả lồng đèn
+        function releaseAllLanterns() {
+            const lanterns = document.querySelectorAll('.lantern:not(.flying)');
+            lanterns.forEach((lantern, index) => {
+                setTimeout(() => {
+                    releaseLantern(lantern, false); // Không hiển thị điều ước
+                }, index * 100);
+            });
+        }
+
+        // Tạo nhiều lồng đèn ngẫu nhiên
+        function createRandomLanterns() {
+            const count = Math.floor(Math.random() * 5) + 3; // 3-7 lồng đèn
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    createLantern();
+                }, i * 150);
+            }
+        }
+
+        // Xử lý phím tắt
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                createLantern();
+            } else if (e.code === 'Enter') {
+                e.preventDefault();
+                releaseAllLanterns();
+            } else if (e.key === 'a' || e.key === 'A') {
+                e.preventDefault();
+                createRandomLanterns();
+            }
+        });
+
+        // Theo dõi các hoạt động của người dùng
+        function setupActivityTracking() {
+            const events = ['click', 'keydown', 'mousemove', 'scroll', 'touchstart'];
+            
+            events.forEach(event => {
+                document.addEventListener(event, updateUserActivity, { passive: true });
+            });
+            
+            // Khởi tạo timer đầu tiên
+            updateUserActivity();
+            startCountdownDisplay();
+        }
+
+        // Khởi tạo
+        createStars();
+        createLantern();
+        createLantern();
+        createLantern();
+        autoCreateLanterns();
+        autoCreateShootingStars();
+        autoCreateFallingLeaves();
+        setupActivityTracking();
+        
+        // Xử lý lỗi load ảnh mặt trăng
+        const moonElement = document.querySelector('.moon');
+        const moonImg = new Image();
+        moonImg.onload = function() {
+            // Ảnh load thành công, giữ nguyên
+        };
+        moonImg.onerror = function() {
+            // Ảnh không load được, hiển thị fallback
+            moonElement.classList.add('fallback');
+        };
+        moonImg.src = 'images/moon.png';
+
+        // Tạo hiệu ứng particle khi click
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.lantern') || e.target.closest('.release-button')) return;
+            
+            const particle = document.createElement('div');
+            particle.style.position = 'absolute';
+            particle.style.left = e.clientX + 'px';
+            particle.style.top = e.clientY + 'px';
+            particle.style.width = '10px';
+            particle.style.height = '10px';
+            particle.style.background = '#ffd700';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '1000';
+            document.body.appendChild(particle);
+            
+            gsap.to(particle, {
+                duration: 1,
+                scale: 0,
+                opacity: 0,
+                y: -50,
+                onComplete: () => particle.remove()
+            });
+        });
+    </script>
+</body>
+</html>
